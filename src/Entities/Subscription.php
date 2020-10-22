@@ -10,6 +10,7 @@ class Subscription
      * @var int
      */
     const STATUS_ACTIVE    = 1;
+
     const STATUS_CANCELLED = 2;
 
     /**
@@ -28,6 +29,7 @@ class Subscription
      * @var int
      */
     const PLAN_WEEKLY      = 1;
+
     const PLAN_FORTNIGHTLY = 2;
 
     /**
@@ -60,4 +62,34 @@ class Subscription
      * @var \Carbon\Carbon|null
      */
     protected $nextDeliveryDate;
+    
+    public function setStatus($status)
+    {
+		$this->status = $status;
+	}
+	
+	public function getStatus()
+	{
+		return self::STATUSES_ALLOWED[$this->status];
+	}
+	
+	public function setPlan($plan)
+	{
+		$this->plan = $plan;
+	}
+	
+	public function getPlan()
+	{
+		return self::PLANS_ALLOWED[$this->plan];
+	}
+	
+	public function setNextDeliveryDate($nextDeliveryDate)
+	{
+		$this->nextDeliveryDate	= $nextDeliveryDate;
+	}
+	
+	public function getNextDeliveryDate()
+	{
+		return $this->nextDeliveryDate;
+	}
 }

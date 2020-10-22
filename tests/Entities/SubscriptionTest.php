@@ -3,6 +3,7 @@
 namespace Tests\Entities;
 
 use Carbon\Carbon;
+
 use App\Entities\Subscription;
 
 class SubscriptionTest extends \PHPUnit\Framework\TestCase
@@ -28,6 +29,7 @@ class SubscriptionTest extends \PHPUnit\Framework\TestCase
     public function testItSetsAndGetsDeliveryDate()
     {
         $subscription = new Subscription();
+
         $date         = (new Carbon('Next Thursday'))->startOfDay();
 
         $subscription->setNextDeliveryDate($date);
