@@ -9,15 +9,21 @@ class GetScheduledOrdersTest extends \PHPUnit\Framework\TestCase
 {
     public function testItGeneratesForWeeklySubscription()
     {
-        $date         = (new \Carbon\Carbon('2019-01-01'))->startOfDay();
-        $weeks        = 6;
-        $subscription = (new Subscription())
+        $date = (new \Carbon\Carbon('2019-01-01'))->startOfDay();
+        $weeks = 6;
+         
+        /*$subscription = (new Subscription())
             ->setNextDeliveryDate($date->copy())
             ->setStatus(Subscription::STATUS_ACTIVE)
-            ->setPlan(Subscription::PLAN_WEEKLY);
+            ->setPlan(Subscription::PLAN_WEEKLY);*/
+        
+        $subscription = new Subscription();
+        $subscription->setNextDeliveryDate($date->copy());
+        $subscription->setStatus(Subscription::STATUS_ACTIVE);
+        $subscription->setPlan(Subscription::PLAN_WEEKLY);
 
         $getScheduledOrdersService = new GetScheduledOrders();
-        $scheduledOrders           = $getScheduledOrdersService->handle($subscription, $weeks);
+        $scheduledOrders = $getScheduledOrdersService->handle($subscription, $weeks);
 
         $this->assertCount($weeks, $scheduledOrders);
 
@@ -32,15 +38,21 @@ class GetScheduledOrdersTest extends \PHPUnit\Framework\TestCase
 
     public function testItGeneratesForFortnightlySubscription()
     {
-        $date         = (new \Carbon\Carbon('2019-08-01'))->startOfDay();
-        $weeks        = 6;
-        $subscription = (new Subscription())
+        $date = (new \Carbon\Carbon('2019-08-01'))->startOfDay();
+        $weeks = 6;
+        
+        /*$subscription = (new Subscription())
             ->setNextDeliveryDate($date->copy())
             ->setStatus(Subscription::STATUS_ACTIVE)
-            ->setPlan(Subscription::PLAN_FORTNIGHTLY);
-
+            ->setPlan(Subscription::PLAN_FORTNIGHTLY);*/
+            
+        $subscription = new Subscription();
+        $subscription->setNextDeliveryDate($date->copy());
+        $subscription->setStatus(Subscription::STATUS_ACTIVE);
+        $subscription->setPlan(Subscription::PLAN_FORTNIGHTLY);
+        
         $getScheduledOrdersService = new GetScheduledOrders();
-        $scheduledOrders           = $getScheduledOrdersService->handle($subscription, $weeks);
+        $scheduledOrders = $getScheduledOrdersService->handle($subscription, $weeks);
 
         $this->assertCount($weeks, $scheduledOrders);
 
@@ -58,16 +70,22 @@ class GetScheduledOrdersTest extends \PHPUnit\Framework\TestCase
 
     public function testItGeneratesNumberOfWeeksDynamically()
     {
-        $date         = (new \Carbon\Carbon('2019-08-01'))->startOfDay();
-        $subscription = (new Subscription())
+        $date = (new \Carbon\Carbon('2019-08-01'))->startOfDay();
+        
+        /*$subscription = (new Subscription())
             ->setNextDeliveryDate($date->copy())
             ->setStatus(Subscription::STATUS_ACTIVE)
-            ->setPlan(Subscription::PLAN_FORTNIGHTLY);
-
+            ->setPlan(Subscription::PLAN_FORTNIGHTLY);*/
+            
+        $subscription = new Subscription();
+        $subscription->setNextDeliveryDate($date->copy());
+        $subscription->setStatus(Subscription::STATUS_ACTIVE);
+        $subscription->setPlan(Subscription::PLAN_FORTNIGHTLY);
+        
         // Test it is able to generate all the way upto a whole year
         for ($weeks = 1; $weeks <= 52; $weeks++) {
             $getScheduledOrdersService = new GetScheduledOrders();
-            $scheduledOrders           = $getScheduledOrdersService->handle($subscription, $weeks);
+            $scheduledOrders = $getScheduledOrdersService->handle($subscription, $weeks);
 
             $this->assertCount($weeks, $scheduledOrders);
         }
@@ -75,12 +93,16 @@ class GetScheduledOrdersTest extends \PHPUnit\Framework\TestCase
 
     public function testItDoesntGenerateForCancelledSubscription()
     {
-        $subscription = (new Subscription())
+		/*$subscription = (new Subscription())
             ->setStatus(Subscription::STATUS_CANCELLED)
-            ->setPlan(Subscription::PLAN_FORTNIGHTLY);
+            ->setPlan(Subscription::PLAN_FORTNIGHTLY);*/
+        
+        $subscription = new Subscription();
+        $subscription->setStatus(Subscription::STATUS_CANCELLED);
+        $subscription->setPlan(Subscription::PLAN_FORTNIGHTLY);
 
         $getScheduledOrdersService = new GetScheduledOrders();
-        $scheduledOrders           = $getScheduledOrdersService->handle($subscription);
+        $scheduledOrders = $getScheduledOrdersService->handle($subscription);
 
         $this->assertEmpty($scheduledOrders);
     }

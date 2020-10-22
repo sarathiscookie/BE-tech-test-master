@@ -43,6 +43,42 @@ class ScheduledOrder
     public function __construct(Carbon $deliveryDate, bool $isInterval)
     {
         $this->deliveryDate = $deliveryDate;
+
         $this->interval     = $isInterval;
     }
+    
+    public function isInterval()
+    {
+		return $this->interval;
+	}
+	
+	public function setHoliday(bool $holiday)
+	{
+		if($this->isInterval())
+		{
+			$this->holiday = $holiday;
+		}
+	}
+	
+	public function isHoliday()
+	{
+		return $this->holiday;
+	}
+	
+	public function getDeliveryDate()
+	{
+		return $this->deliveryDate;
+	}
+	
+	public function setOptIn(bool $optIn)
+	{
+		if( !$this->isInterval() ) {
+            $this->optIn = $optIn; 
+		}
+	}
+	
+	public function isOptIn()
+	{
+		return $this->optIn;
+	}
 }
